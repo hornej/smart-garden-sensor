@@ -30,7 +30,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:0px;margin-top:43px;">
-
+var moisture = 6;
   <!-- Header -->
   <header class="w3-container" style="padding-top:22px">
     <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
@@ -38,7 +38,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
   <div class="w3-row-padding w3-margin-bottom">
     <div class="w3-third">
-      <div class="w3-container w3-text-white w3-padding-16" style="background-color:rgb(61,150, 60);">
+      <div class="w3-container w3-text-white w3-padding-16 w3-round-large" style="background-color:rgb(61,150, 60);">
         <div class="w3-left"><i class="fa fa-tint w3-xxxlarge"></i></div>
         <div class="w3-right">
           <h3 id="moisture"></h3>
@@ -50,7 +50,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
  
  
     <div class="w3-third">
-      <div class="w3-container w3-text-white w3-padding-16" style="background-color:rgb(74,184,73);">
+      <div class="w3-container w3-text-white w3-padding-16 w3-round-large" style="background-color:rgb(74,184,73);">
         <div class="w3-left"><i class="fa fa-sun-o w3-xxxlarge"></i></div>
         <div class="w3-right">
           <h3 id = "light"></h3>
@@ -64,11 +64,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     
     
     <div class="w3-third">
-      <div class="w3-container w3-text-white w3-padding-16" style="background-color:rgb(81,199,77);">
+      <div class="w3-container w3-text-white w3-padding-16 w3-round-large" style="background-color:rgb(81,199,77);">
         <div class="w3-left"><i class="fa fa-thermometer-half w3-xxxlarge"></i></div>
         <div class="w3-right">
-          <!-- <h3 id="temp"></h3> -->
-          <h3>45 F</h3>
+          <h3 id="temp"></h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Temperature</h4>
@@ -84,7 +83,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-row-padding w3-margin-bottom">
       
           <div class="w3-half">
-      <div class="w3-container w3-text-white w3-padding-16" style="background-color:rgb(150,219,51);">
+      <div class="w3-container w3-text-white w3-padding-16 w3-round-large" style="background-color:rgb(150,219,51);">
         <div class="w3-left"><i class="fa fa-tree w3-xxxlarge"></i></div>
         <div class="w3-right">
           <h3 id="humidity"></h3>
@@ -95,7 +94,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </div>
     
     <div class="w3-half">
-      <div class="w3-container w3-text-white w3-padding-16" style="background-color:rgb(61,150, 60);">
+      <div class="w3-container w3-text-white w3-padding-16 w3-round-large" style="background-color:rgb(61,150, 60);">
         <div class="w3-left"><i class="fa fa-thermometer-half w3-xxxlarge"></i></div>
         <div class="w3-right">
           <h3 id="soiltemp"></h3>
@@ -109,10 +108,17 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 </div>
 
-<div>
 
-  <button type='button' onclick="waterOn()">Start Watering</button>
-  <button type='button' onclick="waterOff()">Stop Watering</button>
+
+
+ <div class="w3-center">
+  <button class="w3-button w3-blue w3-round" onclick="waterOn()"><i class="fa fa-tint w3-xxxlarge"></i></button>
+</div>
+
+  
+  <br>
+  <div class="w3-center">
+  <button class="w3-button w3-red w3-round" onclick="waterOff()"><i class="fa fa-ban w3-xxlarge"></i></button>
 
 </div>
  
@@ -124,7 +130,7 @@ $(document).ready(
 					'https://garden-sensor.firebaseio.com/temp/data.json',
 					function(data) {
  					<!-- console.log(data); -->
-					$('#temp').html(data);
+					$('#temp').html(data + " C");
 					setTimeout(doPoll,5000);
 					});
 			
@@ -133,11 +139,13 @@ $(document).ready(
 					function(data) {
  					<!-- console.log(data); -->
 					<!-- $('#light').html(data); -->
-					if (data <= 100){$('#light').html("Overcast");}
-					if (data < 400 & data > 100){$('#light').html("Clear Morning Sun");}
-					if (data < 1000 & data >= 400){$('#light').html("Overcast");}
-					if (data < 25000 & data >= 10000){$('#light').html("Indirect Daylight");}
-					if (data >= 25000){$('#light').html("Direct Sunlight");}
+					if (data < 1000){$('#light').html("Overcast");}
+					if (data > 1000){$('#light').html("Sunny");}
+					<!--if (data <= 100){$('#light').html("Overcast");}-->
+					<!--if (data < 400 & data > 100){$('#light').html("Clear Morning Sun");}-->
+					<!--if (data < 1000 & data >= 400){$('#light').html("Overcast");}-->
+					<!--if (data < 25000 & data >= 10000){$('#light').html("Indirect Daylight");}-->
+					<!--if (data >= 25000){$('#light').html("Direct Sunlight");}-->
 					setTimeout(doPoll,5000);
 					});
 			
@@ -146,6 +154,8 @@ $(document).ready(
 					function(data) {
 					<!-- console.log(data); -->
 					$('#moisture').html(parseInt(data*100/1019 - .393) + "%");
+					if (data < 700){waterOn();}
+					if (data > 700){waterOff();}
 					setTimeout(doPoll,5000);
 					});
 			

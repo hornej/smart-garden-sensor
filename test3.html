@@ -30,7 +30,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:0px;margin-top:43px;">
-var moisture = 6;
   <!-- Header -->
   <header class="w3-container" style="padding-top:22px">
     <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
@@ -109,25 +108,23 @@ var moisture = 6;
 </div>
 
 
-
-
  <div class="w3-center">
-  <button class="w3-button w3-blue w3-round" onclick="waterOn()"><i class="fa fa-tint w3-xxxlarge"></i></button>
+  <button class="w3-button w3-blue w3-round" onclick="waterOns()"><i class="fa fa-tint w3-xxxlarge"></i></button>
 </div>
-
+<!--  toggle button, one that just switches between? -->
   
-  <br>
+  
   <div class="w3-center">
-  <button class="w3-button w3-red w3-round" onclick="waterOff()"><i class="fa fa-ban w3-xxlarge"></i></button>
+  <button class="w3-button w3-red w3-round" onclick="waterends()"><i class="fa fa-ban w3-xxlarge"></i></button>
 
-</div>
- 
+
+ </div>
 
 <script>
 $(document).ready(
 		function doPoll(){
 			$.getJSON(
-					'https://garden-sensor.firebaseio.com/temp/data.json',
+					'https://garden-sensor.firebaseio.com/data/temp/data.json',
 					function(data) {
  					<!-- console.log(data); -->
 					$('#temp').html(data + " C");
@@ -135,7 +132,7 @@ $(document).ready(
 					});
 			
 			$.getJSON(
-					'https://garden-sensor.firebaseio.com/light/data.json',
+					'https://garden-sensor.firebaseio.com/data/light/data.json',
 					function(data) {
  					<!-- console.log(data); -->
 					<!-- $('#light').html(data); -->
@@ -150,17 +147,17 @@ $(document).ready(
 					});
 			
 			$.getJSON(
-					'https://garden-sensor.firebaseio.com/moisture/data.json',
+					'https://garden-sensor.firebaseio.com/data/moisture/data.json',
 					function(data) {
 					<!-- console.log(data); -->
 					$('#moisture').html(parseInt(data*100/1019 - .393) + "%");
-					if (data < 700){waterOn();}
-					if (data > 700){waterOff();}
+					if (data < 550){waterOn();}
+					if (data > 550){waterend();}
 					setTimeout(doPoll,5000);
 					});
 			
 			$.getJSON(
-					'https://garden-sensor.firebaseio.com/humidity/data.json',
+					'https://garden-sensor.firebaseio.com/data/humidity/data.json',
 					function(data) {
 					<!-- console.log(data); -->
 					$('#humidity').html(data + "%");
@@ -168,7 +165,7 @@ $(document).ready(
 					});
 			
 			$.getJSON(
-					'https://garden-sensor.firebaseio.com/soiltemp/data.json',
+					'https://garden-sensor.firebaseio.com/data/soiltemp/data.json',
 					function(data) {
 					<!-- console.log(data); -->
 					$('#soiltemp').html(data);
@@ -177,28 +174,66 @@ $(document).ready(
 			
 		}
 				)
+</script>
 				
+<script>
 function waterOn() {
 	$.ajax({
 		type: 'PUT', // Use POST with X-HTTP-Method-Override or a straight PUT if appropriate.
-		accept: "application/json",
+		<!--accept: "application/json",-->
 		contentType: "application/json",
 		url: "https://garden-sensor.firebaseio.com/valve.json", // A valid URL 
 		data: '{"valveData":"open"}' // Some data e.g. Valid JSON as a string
 	}); 
 				}
 				
-function waterOff() {
+function waterOns() {
 	$.ajax({
 		type: 'PUT', // Use POST with X-HTTP-Method-Override or a straight PUT if appropriate.
-		accept: "application/json",
+		<!--accept: "application/json",-->
 		contentType: "application/json",
 		url: "https://garden-sensor.firebaseio.com/valve.json", // A valid URL 
-		data: '{"valveData":"closed"}' // Some data e.g. Valid JSON as a string
+		data: '{"valveData":"open"}' // Some data e.g. Valid JSON as a string
+	});
+	$.ajax({
+		type: 'PUT', // Use POST with X-HTTP-Method-Override or a straight PUT if appropriate.
+		<!--accept: "application/json",-->
+		contentType: "application/json",
+		url: "https://garden-sensor.firebaseio.com/data/moisture.json", // A valid URL 
+		data: '{"data":"5"}' // Some data e.g. Valid JSON as a string
+	});
+	 
+				}
+				
+function waterend() {
+	$.ajax({
+		type: 'PUT', // Use POST with X-HTTP-Method-Override or a straight PUT if appropriate.
+		<!--accept: "application/json",-->
+		contentType: "application/json",
+		url: "https://garden-sensor.firebaseio.com/valve.json", // A valid URL 
+		data: '{"valveData":"c"}' // Some data e.g. Valid JSON as a string
 	}); 
 				}
-
+function waterends() {
+	$.ajax({
+		type: 'PUT', // Use POST with X-HTTP-Method-Override or a straight PUT if appropriate.
+		<!--accept: "application/json",-->
+		contentType: "application/json",
+		url: "https://garden-sensor.firebaseio.com/valve.json", // A valid URL 
+		data: '{"valveData":"c"}' // Some data e.g. Valid JSON as a string
+	}); 
+	$.ajax({
+		type: 'PUT', // Use POST with X-HTTP-Method-Override or a straight PUT if appropriate.
+		<!--accept: "application/json",-->
+		contentType: "application/json",
+		url: "https://garden-sensor.firebaseio.com/data/moisture.json", // A valid URL 
+		data: '{"data":"600"}' // Some data e.g. Valid JSON as a string
+	});
+				}
 				
+</script>
+
+<script>		
 // Get the Sidebar
 var mySidebar = document.getElementById("mySidebar");
 
